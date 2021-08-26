@@ -8,6 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
+chromedriver_path = r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe"
 MIDNIGHT = "00:00:00"
 user_database = {
     "YX": ["YTAY033", "P@ssw0rd!@as"],
@@ -59,7 +60,7 @@ class App(tk.Frame):
         user = user_database[self.user_listbox.get(self.user_listbox.curselection())]
         timing = self.timing_listbox.get(self.timing_listbox.curselection())
 
-        driver = webdriver.Chrome(r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe") 
+        driver = webdriver.Chrome(chromedriver_path) 
         driver.get('https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe88/srce_smain_s.Notice_O&extra=&pg=')
 
         username_element = driver.find_element_by_xpath(

@@ -45,7 +45,6 @@ class App(tk.Frame):
             self.user_listbox.insert(count, i)
             count += 1
         self.user_listbox.insert(count, "DEBUGGER")
-        self.debugger_mode = True
         user_label = tk.Label(master=frame_a, text="User", bg="grey", bd=0)
         self.user_listbox.pack(side=BOTTOM)
         user_label.pack(side=TOP)
@@ -66,8 +65,9 @@ class App(tk.Frame):
         confirm_button.pack(side=BOTTOM)
 
     def confirm_clicked(self):
-        if self.debugger_mode:
+        if self.user_listbox.get(self.user_listbox.curselection()) == "DEBUGGER":
             user = user_database["YX"]
+            self.debugger_mode = True
         else:
             user = user_database[self.user_listbox.get(self.user_listbox.curselection())]
         timing = self.timing_listbox.get(self.timing_listbox.curselection())

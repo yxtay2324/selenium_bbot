@@ -10,11 +10,28 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 
 chromedriver_path = r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe"
-MIDNIGHT = "00:00:00"
+MIDNIGHT = "00:02:00"
 COURT_ORDER = [3, 4, 1, 2, 5, 6]
-COURT_TO_XPATH_1600_1700 = ["tr[50]/td[10]", "tr[51]/td[9]", "tr[52]/td[9]", "tr[53]/td[9]", "tr[54]/td[9]", "tr[55]/td[9]"]
-COURT_TO_XPATH_1700_1800 = ["tr[56]/td[10]", "tr[57]/td[9]", "tr[58]/td[9]", "tr[59]/td[9]", "tr[60]/td[9]", "tr[61]/td[9]"]
-COURT_TO_XPATH_1800_1900 = ["tr[62]/td[10]", "tr[63]/td[9]", "tr[64]/td[9]", "tr[65]/td[9]", "tr[66]/td[9]", "tr[67]/td[9]"]
+COURT_TO_XPATH = {
+    "1600-1700 court 1": "tr[50]/td[10]",
+    "1600-1700 court 2": "tr[51]/td[9]",
+    "1600-1700 court 3": "tr[52]/td[9]",
+    "1600-1700 court 4": "tr[53]/td[9]",
+    "1600-1700 court 5": "tr[54]/td[9]",
+    "1600-1700 court 6": "tr[55]/td[9]",
+    "1700-1800 court 1": "tr[56]/td[10]",
+    "1700-1800 court 2": "tr[57]/td[9]",
+    "1700-1800 court 3": "tr[58]/td[9]",
+    "1700-1800 court 4": "tr[59]/td[9]",
+    "1700-1800 court 5": "tr[60]/td[9]",
+    "1700-1800 court 6": "tr[61]/td[9]",
+    "1800-1900 court 1": "tr[62]/td[10]",
+    "1800-1900 court 2": "tr[63]/td[9]",
+    "1800-1900 court 3": "tr[64]/td[9]",
+    "1800-1900 court 4": "tr[65]/td[9]",
+    "1800-1900 court 5": "tr[66]/td[9]",
+    "1800-1900 court 6": "tr[67]/td[9]",
+}
 user_database = {
     "YX": ["YTAY033", "P@ssw0rd!@as"],
     "ZH": ["TANZ0154", "Buttosai1998!"],
@@ -115,9 +132,31 @@ class App(tk.Frame):
         #example of taken court element-(1800-1900 court 3) "//*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/tr[64]/td[9]"
         # confirm button element- //*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]
 
-        for i in COURT_ORDER:
-            checker_thread = threading.Thread(target=self.select_court, args=[i, timing])
-            checker_thread.start()
+        checker_thread1 = threading.Thread(target=self.select_court, args=[3, timing])
+        """checker_thread2 = threading.Thread(target=self.select_court, args=[4, timing])
+        checker_thread3 = threading.Thread(target=self.select_court, args=[5, timing])
+        checker_thread4 = threading.Thread(target=self.select_court, args=[2, timing])
+        checker_thread5 = threading.Thread(target=self.select_court, args=[1, timing])
+        checker_thread6 = threading.Thread(target=self.select_court, args=[6, timing])
+        """
+        
+        checker_thread1.start()
+        """
+        checker_thread2.start()
+        checker_thread3.start()
+        checker_thread4.start()
+        checker_thread5.start()
+        checker_thread6.start()
+        """
+
+        checker_thread1.join()
+        """
+        checker_thread2.join()
+        checker_thread3.join()
+        checker_thread4.join()
+        checker_thread5.join()
+        checker_thread6.join()
+        """
 
         confirm_book_button = WebDriverWait(self.driver, 65).until(EC.element_to_be_clickable((By.XPATH, 
             "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]"))
@@ -140,13 +179,9 @@ class App(tk.Frame):
         self.pause_till_midnight.wait()
     
     def select_court(self, court_number, timing):
-        element = None
-        if timing == "1600-1700":
-            element = COURT_TO_XPATH_1600_1700[court_number-1]
-        elif timing == "1700-1800":
-            element = COURT_TO_XPATH_1700_1800[court_number-1]
-        elif timing == "1800-1900":
-            element = COURT_TO_XPATH_1800_1900[court_number-1]
+        key = timing + " court " + str(court_number)
+        element = COURT_TO_XPATH[key]
+        print(element)
         court_button = WebDriverWait(self.driver, 60).until(EC.element_to_be_clickable((By.XPATH, 
             "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/{}/input".format(element)))
         ).click()

@@ -1,6 +1,5 @@
 import time as timer
 import tkinter as tk
-#from pathos.multiprocessing import ProcessPool
 from multiprocess import Process
 from datetime import datetime
 from tkinter.constants import BOTTOM, BROWSE, LEFT, RIGHT, TOP
@@ -11,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import UnexpectedAlertPresentException
 
 chromedriver_path = r"C:\Users\Annihilat0R\Downloads\chromedriver_win32\chromedriver.exe"
-MIDNIGHT = "20:36:00"
+MIDNIGHT = "00:00:00"
 COURT_ORDER = [3, 4, 1, 2, 5, 6]
 COURT_TO_XPATH = {
     "1600-1700 court 1": "tr[50]/td[10]",

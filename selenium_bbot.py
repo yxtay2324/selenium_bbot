@@ -1,15 +1,17 @@
+import multiprocessing
 import time as timer
 import tkinter as tk
-import threading
-from datetime import datetime, time
+#from pathos.multiprocessing import ProcessPool
+from multiprocess import Process
+from datetime import datetime
 from tkinter.constants import BOTTOM, BROWSE, LEFT, RIGHT, TOP
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.keys import Keys
+from pathos.helpers import freeze_support
 
-chromedriver_path = r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe"
+chromedriver_path = r"C:\Users\Annihilat0R\Downloads\chromedriver_win32\chromedriver.exe"
 MIDNIGHT = "00:02:00"
 COURT_ORDER = [3, 4, 1, 2, 5, 6]
 COURT_TO_XPATH = {
@@ -30,7 +32,7 @@ COURT_TO_XPATH = {
     "1800-1900 court 3": "tr[64]/td[9]",
     "1800-1900 court 4": "tr[65]/td[9]",
     "1800-1900 court 5": "tr[66]/td[9]",
-    "1800-1900 court 6": "tr[67]/td[9]",
+    "1800-1900 court 6": "tr[67]/td[9]"
 }
 user_database = {
     "YX": ["YTAY033", "P@ssw0rd!@as"],
@@ -44,8 +46,6 @@ class App(tk.Frame):
     user_listbox = None
     timing_listbox = None
     debugger_mode = False
-    driver = webdriver.Chrome(chromedriver_path) 
-    pause_till_midnight = threading.Event()
 
     def __init__(self, master=None):
         super().__init__(master)
@@ -89,31 +89,18 @@ class App(tk.Frame):
             user = user_database[self.user_listbox.get(self.user_listbox.curselection())]
         timing = self.timing_listbox.get(self.timing_listbox.curselection())
 
-        self.driver.get('https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe88/srce_smain_s.Notice_O&extra=&pg=')
 
-        username_element = self.driver.find_element_by_xpath(
-            "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[2]/td[2]/input"
-        ).send_keys(user[0])
+        process_1 = Process(target=new_window, args=(user, 3, timing,))
+        process_2 = Process(target=new_window, args=(user, 2, timing,))
+        process_3 = Process(target=new_window, args=(user, 4, timing,))
 
-        username_OK = WebDriverWait(self.driver, 3).until(EC.element_to_be_clickable((By.XPATH, 
-            "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[4]/td/input[1]"))
-        ).click()
+        process_1.start()
+        process_2.start()
+        process_3.start()
 
-        password_element = WebDriverWait(self.driver, 3).until(EC.element_to_be_clickable((By.XPATH,
-            "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[3]/td[2]/input"))
-        ).send_keys(user[1])
-
-        password_OK = WebDriverWait(self.driver, 3).until(EC.element_to_be_clickable((By.XPATH,
-            "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[5]/td/input[1]"))
-        ).click()
-
-        if not self.debugger_mode:
-            self.wait_till_midnight()
-            print("Its midnight!")
-
-        north_hill_court = WebDriverWait(self.driver, 3).until(EC.element_to_be_clickable((By.XPATH, 
-            "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/ul/li[4]/table[2]/tbody/tr[1]/td/input"))
-        ).click()
+        process_1.join()
+        process_2.join()
+        process_3.join()
 
         # html patterns show xpath up till 2nd last segment (tr[...]) is fixed,
         # tr[...] corresponding to the row of the RIGHT MOST column, and td corresponding to the column whole row,
@@ -131,60 +118,49 @@ class App(tk.Frame):
         #example of taken court element-(1700-1800 court 3) "//*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/tr[58]/td[9]"
         #example of taken court element-(1800-1900 court 3) "//*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/tr[64]/td[9]"
         # confirm button element- //*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]
+       
 
-        checker_thread1 = threading.Thread(target=self.select_court, args=[3, timing])
-        """checker_thread2 = threading.Thread(target=self.select_court, args=[4, timing])
-        checker_thread3 = threading.Thread(target=self.select_court, args=[5, timing])
-        checker_thread4 = threading.Thread(target=self.select_court, args=[2, timing])
-        checker_thread5 = threading.Thread(target=self.select_court, args=[1, timing])
-        checker_thread6 = threading.Thread(target=self.select_court, args=[6, timing])
-        """
-        
-        checker_thread1.start()
-        """
-        checker_thread2.start()
-        checker_thread3.start()
-        checker_thread4.start()
-        checker_thread5.start()
-        checker_thread6.start()
-        """
+def new_window(username, court_number, timing):
+    driver = webdriver.Chrome(chromedriver_path) 
+    driver.get('https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe88/srce_smain_s.Notice_O&extra=&pg=')
 
-        checker_thread1.join()
-        """
-        checker_thread2.join()
-        checker_thread3.join()
-        checker_thread4.join()
-        checker_thread5.join()
-        checker_thread6.join()
-        """
+    username_element = driver.find_element_by_xpath(
+        "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[2]/td[2]/input"
+    ).send_keys(username[0])
 
-        confirm_book_button = WebDriverWait(self.driver, 65).until(EC.element_to_be_clickable((By.XPATH, 
-            "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]"))
-        ).click()
+    username_OK = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, 
+        "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[4]/td/input[1]"))
+    ).click()
 
-    def get_time(self):
-        count = 0
-        while True:
-            current_time = datetime.now().strftime("%H:%M:%S")
-            if current_time == MIDNIGHT:
-                self.pause_till_midnight.set()
-                break
-            print("Seconds elapsed ", count)  
-            timer.sleep(1)
-            count += 1          
+    password_element = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH,
+        "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[3]/td[2]/input"))
+    ).send_keys(username[1])
 
-    def wait_till_midnight(self):
-        thread = threading.Thread(target=self.get_time)
-        thread.start()
-        self.pause_till_midnight.wait()
+    password_OK = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH,
+        "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[5]/td/input[1]"))
+    ).click()
+
+    count = 0
+    while True:
+        current_time = datetime.now().strftime("%H:%M:%S")
+        if current_time == MIDNIGHT:
+            break
+        timer.sleep(1)
+        count += 1  
     
-    def select_court(self, court_number, timing):
-        key = timing + " court " + str(court_number)
-        element = COURT_TO_XPATH[key]
-        print(element)
-        court_button = WebDriverWait(self.driver, 60).until(EC.element_to_be_clickable((By.XPATH, 
-            "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/{}/input".format(element)))
-        ).click()
+    north_hill_court = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, 
+        "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/ul/li[4]/table[2]/tbody/tr[1]/td/input"))
+    ).click()
+
+    key = timing + " court " + str(court_number)
+    element = COURT_TO_XPATH[key]
+    court_button = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, 
+        "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/{}/input".format(element)))
+    ).click()      
+
+    confirm_book_button = WebDriverWait(driver, 65).until(EC.element_to_be_clickable((By.XPATH, 
+        "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]"))
+    ).click()  
 
 def main():
     root = tk.Tk()
@@ -194,4 +170,6 @@ def main():
     app.mainloop()
     
 if __name__ == "__main__":
+    #from pathos.helpers import freeze_support
+    #freeze_support()
     main()

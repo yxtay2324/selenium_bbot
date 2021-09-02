@@ -1,7 +1,8 @@
 import time as timer
+import pyautogui
 import tkinter as tk
-from multiprocess import Process
 from datetime import datetime
+from multiprocess import Process
 from tkinter.constants import BOTTOM, BROWSE, LEFT, RIGHT, TOP
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC
@@ -9,7 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import UnexpectedAlertPresentException
 
-chromedriver_path = r"C:\Users\Annihilat0R\Downloads\chromedriver_win32\chromedriver.exe"
+chromedriver_path = r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe"
 MIDNIGHT = "00:00:00"
 COURT_ORDER = [3, 4, 1, 2, 5, 6]
 COURT_TO_XPATH = {
@@ -158,7 +159,6 @@ def new_window(debug, username, court_number, timing):
     ).click()   
 
     try:
-        import pyautogui
         confirm_book_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, 
             "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]"))
         ).click()

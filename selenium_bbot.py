@@ -10,9 +10,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import UnexpectedAlertPresentException
 
-#usdhasnd
+#chromedriver_path = r"" #gerald's 
+#chromedriver_path = r"C:\Users\Wilson Tan\Downloads\chromedriver_win32\chromedriver.exe" #zh's
+chromedriver_path = r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe" #yx
 
-chromedriver_path = r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe"
 MIDNIGHT = "00:00:00"
 COURT_ORDER = [3, 4, 1, 2, 5, 6]
 COURT_TO_XPATH = {

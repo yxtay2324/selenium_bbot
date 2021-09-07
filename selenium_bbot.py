@@ -42,7 +42,8 @@ user_database = {
     "CELESTE": ["ta0005te", "MHiss@CE230121"],
     "JOLENE": ["JOLE0009", "Bts1306!"],
     "NIGEL": ["nleong003", "S765432e!"],
-    "DYLAN": ["Dyeo018", "dalhamix8991!"] 
+    "DYLAN": ["Dyeo018", "dalhamix8991!"],
+    "GERALD": ["glow011", "Skkk2232@^"]
 }
 
 class App(tk.Frame):

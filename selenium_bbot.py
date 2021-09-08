@@ -10,9 +10,23 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import UnexpectedAlertPresentException
 
-#chromedriver_path = r"" #gerald's 
-#chromedriver_path = r"C:\Users\Wilson Tan\Downloads\chromedriver_win32\chromedriver.exe" #zh's
-chromedriver_path = r"C:\Users\umer2\Downloads\chromedriver_win32\chromedriver.exe" #yx
+# from seleniumwire import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+
+
+
+# driver = webdriver.Chrome(ChromeDriverManager().install())
+
+
+# #chromedriver_path = r"" #gerald's
+# #chromedriver_path = r"C:\Users\Wilson Tan\Downloads\chromedriver_win32\chromedriver.exe" #zh's
+
+# chromedriver_path = r"C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe" #vin
+
+chromedriver_path = ChromeDriverManager().install()
+
 
 MIDNIGHT = "00:00:00"
 COURT_ORDER = [3, 4, 1, 2, 5, 6]
@@ -43,7 +57,7 @@ user_database = {
     "JOLENE": ["JOLE0009", "Bts1306!"],
     "NIGEL": ["nleong003", "S765432e!"],
     "DYLAN": ["Dyeo018", "dalhamix8991!"],
-    "GERALD": ["glow011", "Skkk2232@^"]
+    "GERALD": ["glow011", "Skkk2232@^"],
 }
 
 class App(tk.Frame):
@@ -173,7 +187,7 @@ def new_window(debug, username, court_number, timing):
 
 def main():
     root = tk.Tk()
-    root.geometry("600x369")
+    root.geometry("1000x800")
     root.configure(bg='grey')
     app = App(root)
     app.mainloop()

@@ -180,10 +180,10 @@ def new_window(debug, username, court_number, timing):
         confirm_book_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, 
             "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]"))
         ).click()
-        timer.sleep(2)
         pyautogui.alert("Court booked. Click OK to exit.")
+        timer.sleep(180)
     except UnexpectedAlertPresentException as e:
-        pyautogui.alert("Error in booking. "+ str(e))
+        print("Closing failed attempts.")
 
 def main():
     root = tk.Tk()

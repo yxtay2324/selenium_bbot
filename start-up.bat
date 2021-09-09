@@ -1,0 +1,1 @@
+cmd /k "cd /d env\Scripts & activate & cd /d .. & cd /d .. & python selenium_bbot.py"

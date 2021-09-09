@@ -12,10 +12,7 @@ from selenium.common.exceptions import UnexpectedAlertPresentException
 
 # from seleniumwire import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-
-
-
-
+import json
 
 # driver = webdriver.Chrome(ChromeDriverManager().install())
 
@@ -26,7 +23,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 # chromedriver_path = r"C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe" #vin
 
 chromedriver_path = ChromeDriverManager().install()
-
 
 MIDNIGHT = "00:00:00"
 COURT_ORDER = [3, 4, 1, 2, 5, 6]
@@ -50,15 +46,20 @@ COURT_TO_XPATH = {
     "1800-1900 court 5": "tr[66]/td[9]",
     "1800-1900 court 6": "tr[67]/td[9]"
 }
-user_database = {
-    "YX": ["YTAY033", "P@ssw0rd!@as"],
-    "ZH": ["TANZ0154", "Buttosai1998!"],
-    "CELESTE": ["ta0005te", "MHiss@CE230121"],
-    "JOLENE": ["JOLE0009", "Bts1306!"],
-    "NIGEL": ["nleong003", "S765432e!"],
-    "DYLAN": ["Dyeo018", "dalhamix8991!"],
-    "GERALD": ["glow011", "Skkk2232@^"],
-}
+
+
+def read_stored_credentials():
+    try:
+        with open('secrets.json') as f:
+            data = json.load(f)
+    except:
+        pyautogui.alert("Unable to load credentials")
+
+    return data
+
+
+user_database = read_stored_credentials()
+
 
 class App(tk.Frame):
     user_listbox = None
@@ -73,7 +74,7 @@ class App(tk.Frame):
         frame_main = tk.Frame(bg="grey")
         frame_a = tk.Frame(master=frame_main, bg="grey")
         frame_b = tk.Frame(master=frame_main, bg="grey")
-        
+
         self.user_listbox = tk.Listbox(master=frame_a, width=47, height=20, selectmode=BROWSE, exportselection=0)
         count = 1
         for i in user_database:
@@ -135,27 +136,28 @@ class App(tk.Frame):
         # example of taken court element-(1700-1800 court 3) "//*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/tr[58]/td[9]"
         # example of taken court element-(1800-1900 court 3) "//*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/tr[64]/td[9]"
         # confirm button element- //*[@id="top"]/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]
-       
+
 
 def new_window(debug, username, court_number, timing):
-    driver = webdriver.Chrome(chromedriver_path) 
-    driver.get('https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe88/srce_smain_s.Notice_O&extra=&pg=')
+    driver = webdriver.Chrome(chromedriver_path)
+    driver.get(
+        'https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe88/srce_smain_s.Notice_O&extra=&pg=')
 
     username_element = driver.find_element_by_xpath(
         "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[2]/td[2]/input"
     ).send_keys(username[0])
 
-    username_OK = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, 
-        "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[4]/td/input[1]"))
-    ).click()
+    username_OK = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH,
+                                                                             "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[4]/td/input[1]"))
+                                                 ).click()
 
     password_element = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH,
-        "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[3]/td[2]/input"))
-    ).send_keys(username[1])
+                                                                                  "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[3]/td[2]/input"))
+                                                      ).send_keys(username[1])
 
     password_OK = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH,
-        "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[5]/td/input[1]"))
-    ).click()
+                                                                             "/html/body/div/div/div[2]/table/tbody/tr/td/form/center[1]/table/tbody/tr/td/table/tbody/tr[5]/td/input[1]"))
+                                                 ).click()
 
     if not debug:
         count = 0
@@ -164,26 +166,28 @@ def new_window(debug, username, court_number, timing):
             if current_time == MIDNIGHT:
                 break
             timer.sleep(1)
-            count += 1  
-    
-    north_hill_court = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, 
-        "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/ul/li[4]/table[2]/tbody/tr[1]/td/input"))
-    ).click()
+            count += 1
+
+    north_hill_court = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,
+                                                                                  "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/ul/li[4]/table[2]/tbody/tr[1]/td/input"))
+                                                      ).click()
 
     key = timing + " court " + str(court_number)
     element = COURT_TO_XPATH[key]
-    court_button = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH, 
-        "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/{}/input".format(element)))
-    ).click()   
+    court_button = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.XPATH,
+                                                                               "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/table[2]/tbody/{}/input".format(
+                                                                                   element)))
+                                                   ).click()
 
     try:
-        confirm_book_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, 
-            "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]"))
-        ).click()
+        confirm_book_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,
+                                                                                         "//*[@id='top']/div/section[2]/div/div/p/table/tbody/tr/td[2]/form/input[18]"))
+                                                             ).click()
         pyautogui.alert("Court booked. Click OK to exit.")
         timer.sleep(180)
     except UnexpectedAlertPresentException as e:
         print("Closing failed attempts.")
+
 
 def main():
     root = tk.Tk()
@@ -191,6 +195,7 @@ def main():
     root.configure(bg='grey')
     app = App(root)
     app.mainloop()
-    
+
+
 if __name__ == "__main__":
     main()

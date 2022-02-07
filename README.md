@@ -6,13 +6,12 @@ In terminal window, navigate to the project folder and run the following command
   -pip install -r requirements.txt
   
 # IMPORTANT:
-It is recommended to monitor the bot in case something goes wrong.
+It is recommended to monitor the bot in case something goes wrong. \n
 During midnight, the servers run at a very slow rate. If it takes more than 7 seconds to load the court page, manually refresh the page.
 Check the MIDNIGHT variable is set correctly to 00:00:00. This variable decides when the page is loaded.
 
 # selenium_bbot auto
 Run this python file for a hands free booking. Use this with task scheduler. 
-To run selenium_bbot, double click the python file. You should see the main page with user and timing option.
 Key in your login details by changing the USERNAME and PASSWORD variable.
 
 # deprecated

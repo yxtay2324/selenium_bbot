@@ -3,7 +3,7 @@
 1. Install and extract the python file selenium_bbot. Alternatively, clone this repository.
 2. In terminal window, navigate to the project folder and run the following command
 
-  `-pip install -r requirements.txt`
+  `$ pip install -r requirements.txt`
   
 ## IMPORTANT:
 It is recommended to monitor the bot in case something goes wrong. 

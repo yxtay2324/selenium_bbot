@@ -15,8 +15,8 @@ chromedriver_path = ChromeDriverManager().install()
 
 MIDNIGHT = "00:00:00"
 TIMING = "2100-2200"
-USERNAME = 'YTAY033'
-PASSWORD = 'P@ssw0rd@#sd'
+USERNAME = ' '
+PASSWORD = ' '
 
 AVAILABLE_TIMINGS = {
     "1000-1100": 14,

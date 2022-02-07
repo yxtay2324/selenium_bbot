@@ -12,7 +12,7 @@ Check the `MIDNIGHT` variable is set correctly to 00:00:00. This variable decide
 
 ## selenium_bbot auto.py
 Run this python file for a hands free booking. Use this with task scheduler. 
-Key in your login details by changing the `USERNAME` and `PASSWORD` variable.
+Key in your login details by changing the `USERNAME` and `PASSWORD` variable. Change the `TIMING` variable to the desired one in **24 hour format**.
 
 ## selenium_bbot.py
 Same booking mechanism as selenium_bbot auto.py, but requires input of timing and login details from user

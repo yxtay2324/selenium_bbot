@@ -1,4 +1,4 @@
-## selenium_bbot
+# selenium_bbot
 INSTALLATION GUIDE:
 Install and extract the python file selenium_bbot. Alternatively, clone this repository.
 In terminal window, navigate to the project folder and run the following command
@@ -6,7 +6,7 @@ In terminal window, navigate to the project folder and run the following command
   -pip install -r requirements.txt
   
 # IMPORTANT:
-It is recommended to monitor the bot in case something goes wrong. \n
+It is recommended to monitor the bot in case something goes wrong. 
 During midnight, the servers run at a very slow rate. If it takes more than 7 seconds to load the court page, manually refresh the page.
 Check the MIDNIGHT variable is set correctly to 00:00:00. This variable decides when the page is loaded.
 

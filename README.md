@@ -10,9 +10,12 @@ It is recommended to monitor the bot in case something goes wrong.
 During midnight, the servers run at a very slow rate. If it takes more than 7 seconds to load the court page, manually refresh the page.
 Check the `MIDNIGHT` variable is set correctly to 00:00:00. This variable decides when the page is loaded.
 
-## selenium_bbot auto
+## selenium_bbot auto.py
 Run this python file for a hands free booking. Use this with task scheduler. 
 Key in your login details by changing the `USERNAME` and `PASSWORD` variable.
+
+## selenium_bbot.py
+Same booking mechanism as selenium_bbot auto.py, but requires input of timing and login details from user
 
 ~~download chrome driver with the link: https://chromedriver.chromium.org/downloads
 to check google chrome version, click the 3 dots on the top right corner of chrome->help->About Google Chrome. It should be version 92

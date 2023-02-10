@@ -1,4 +1,7 @@
 # selenium_bbot
+
+Selenium bbot is an automation script that uses the selenium library to help book badminton courts, by recognising javascript elements.
+
 **INSTALLATION GUIDE**
 1. Install and extract the python file selenium_bbot. Alternatively, clone this repository.
 2. In terminal window, navigate to the project folder and run the following command
